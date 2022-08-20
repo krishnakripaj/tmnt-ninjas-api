@@ -1,4 +1,5 @@
 const express = require("express");
+const Ninja = require("../models/ninja");
 const router = express.Router();
 
 let ninjas = [
@@ -57,19 +58,23 @@ router.get("/:ninjaId", (req, res) => {
   res.send(ninja);
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   if (!req.body.name) {
     return res.status(400).send("Not all mandatory values are set");
   }
 
-  let newNinja = {
-    id: ninjas.length + 1,
+  let ninja = new Ninja({
     name: req.body.name,
     nickname: req.body.nickname,
+    dob: req.body.dob,
     isMutant: req.body.isMutant,
-  };
-  ninjas.push(newNinja);
-  res.send(newNinja);
+    abilities: req.body.abilities,
+    likeCount: req.body.likeCount,
+    imgUrl: req.body.imgUrl,
+  });
+  await ninja.save()
+
+  res.send(ninja)
 });
 
 // PUT
