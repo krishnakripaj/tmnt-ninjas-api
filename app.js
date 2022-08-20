@@ -5,8 +5,9 @@ const app = express(); // Creating an express application
 const PORT = 3000;
 
 app.use(express.json()); // to be able to parse JSON objects
+app.use(logger)
 app.use(authenticator);
-app.use(logger);
+
 
 app.listen(PORT, () => {
   console.log(`Successfully running on Port ${PORT}`);
@@ -52,6 +53,10 @@ app.get("/api/ninjas/:ninjaId", (req, res) => {
 
   // Finding an object in the ninjas array that has a matching id requested by user
   let ninja = ninjas.find((ninja) => ninja.id === requestedNinjaId);
+
+  // ===      Checks both data type and value when comparing
+  // ==       Comparison Operator. Checking if something is equal to some value
+  // =        Assignment Operator. Assigning a value to a variable
 
   if (!ninja) {
     let errorObj = {
