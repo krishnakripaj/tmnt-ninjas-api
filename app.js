@@ -1,10 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const ninjaRouter = require("./routes/ninjas");
 const authenticator = require("./middleware/authenticator");
 const logger = require("./middleware/logger");
 const app = express(); // Creating an express application
-const PORT = 3000;
+const PORT = 5000;
 
 mongoose
   .connect("mongodb://localhost:27017/ninjasdb")
@@ -13,6 +14,7 @@ mongoose
   })
   .catch((err) => console.log(`Error has occured: ${err}`));
 
+app.use(cors());
 app.use(express.json()); // to be able to parse JSON objects
 app.use(logger);
 app.use(authenticator);
