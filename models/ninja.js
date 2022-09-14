@@ -8,7 +8,10 @@ const ninjaSchema = new mongoose.Schema({
     maxlength: 20,
     unique: true,
   },
-  nickname: String,
+  nickname: {
+    type: String,
+    required: true,
+  },
   dob: Number,
   isMutant: Boolean,
   abilities: [String],

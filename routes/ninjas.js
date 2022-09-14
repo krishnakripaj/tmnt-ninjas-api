@@ -1,6 +1,9 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const Ninja = require("../models/ninja");
 const router = express.Router();
+
+const SECRET_KEY = "12345678";
 
 // GET ALL
 router.get("/", async (req, res) => {
@@ -33,6 +36,15 @@ router.get("/:ninjaId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  const token = req.header("x-jwt-token");
+  if (!token) return res.status(400).send("No token found");
+
+  try {
+    jwt.verify(token, SECRET_KEY);
+  } catch (err) {
+    return res.status(400).send("Invalid token");
+  }
+
   if (!req.body.name) {
     return res.status(400).send("Not all mandatory values are set");
   }
@@ -78,6 +90,15 @@ router.put("/:ninjaId", async (req, res) => {
 
 // DELETE
 router.delete("/:ninjaId", async (req, res) => {
+  const token = req.header("x-jwt-token");
+  if (!token) return res.status(400).send("No token found");
+
+  try {
+    jwt.verify(token, SECRET_KEY);
+  } catch (err) {
+    return res.status(400).send("Invalid token");
+  }
+
   // delete the object with that specific id
   let ninja = await Ninja.findOneAndDelete({ _id: req.params.ninjaId });
 
