@@ -1,13 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const serverless = require("serverless-http");
+
 const ninjaRouter = require("./routes/ninjas");
 const userRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
 const authenticator = require("./middleware/authenticator");
 const logger = require("./middleware/logger");
 const app = express(); // Creating an express application
-const PORT = 5000;
+// const PORT = 5000;
 
 mongoose
   .connect("mongodb://localhost:27017/ninjasdb")
@@ -24,6 +26,9 @@ app.use("/api/ninjas", ninjaRouter);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 
-app.listen(PORT, () => {
-  console.log(`Successfully running on Port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Successfully running on Port ${PORT}`);
+// });
+
+module.exports = app;
+module.exports.handler = serverless(app);
