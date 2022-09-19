@@ -12,7 +12,7 @@ const app = express(); // Creating an express application
 // const PORT = 5000;
 
 mongoose
-  .connect("mongodb://localhost:27017/ninjasdb")
+  .connect("mongodb+srv://root:root@cluster0.pawok1p.mongodb.net/ninjasdb?retryWrites=true&w=majority")
   .then(() => {
     console.log("Connected to DB successfully!");
   })
