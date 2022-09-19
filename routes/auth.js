@@ -5,6 +5,7 @@ const router = express.Router();
 
 const User = require("../models/user");
 
+// not a good practise. move keys to env variables
 const SECRET_KEY = "12345678";
 
 // To check if the user is authenticated or not
@@ -24,6 +25,7 @@ router.post("/", async (req, res) => {
         email: user.email,
         username: user.username,
         message: "Hi I am a message",
+        isAdmin: user.isAdmin
       },
       SECRET_KEY,
       {

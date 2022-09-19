@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const router = express.Router();
 const User = require("../models/user");
 
+// localhost:5000:/api/users
+
 // To create a new user in our system to use our ninjas api methods
 router.post("/", async (req, res) => {
   try {

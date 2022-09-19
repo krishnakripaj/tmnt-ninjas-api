@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const Ninja = require("../models/ninja");
 const router = express.Router();
 
+// not a good practise. move keys to env variables
 const SECRET_KEY = "12345678";
 
 // GET ALL
@@ -94,10 +95,16 @@ router.delete("/:ninjaId", async (req, res) => {
   if (!token) return res.status(400).send("No token found");
 
   try {
-    jwt.verify(token, SECRET_KEY);
+    jwt.verify(token, SECRET_KEY); // check if user is authenticated
   } catch (err) {
     return res.status(400).send("Invalid token");
   }
+
+  let decoded = jwt.decode(token, SECRET_KEY);
+  if (!decoded.isAdmin)
+    return res
+      .status(403)
+      .send("Forbidden. You are not authorized to use this method");
 
   // delete the object with that specific id
   let ninja = await Ninja.findOneAndDelete({ _id: req.params.ninjaId });
